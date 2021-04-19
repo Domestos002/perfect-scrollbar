@@ -1,6 +1,6 @@
 /*!
  * perfect-scrollbar v1.5.0
- * Copyright 2020 Hyunje Jun, MDBootstrap and Contributors
+ * Copyright 2021 Hyunje Jun, MDBootstrap and Contributors
  * Licensed under MIT
  */
 
@@ -325,8 +325,9 @@ function updateGeometry(i) {
   var roundedScrollTop = Math.floor(element.scrollTop);
   var rect = element.getBoundingClientRect();
 
-  i.containerWidth = Math.ceil(rect.width);
-  i.containerHeight = Math.ceil(rect.height);
+  i.containerWidth = Math.round(rect.width);
+  i.containerHeight = Math.round(rect.height);
+
   i.contentWidth = element.scrollWidth;
   i.contentHeight = element.scrollHeight;
 
@@ -1084,6 +1085,11 @@ function touch(i) {
           return;
         }
 
+        if (!i.element) {
+          clearInterval(easingLoop);
+          return;
+        }
+
         applyTouchMove(speed.x * 30, speed.y * 30);
 
         speed.x *= 0.8;
@@ -1183,7 +1189,6 @@ var PerfectScrollbar = function PerfectScrollbar(element, userSettings) {
   element.appendChild(this.scrollbarXRail);
   this.scrollbarX = div(cls.element.thumb('x'));
   this.scrollbarXRail.appendChild(this.scrollbarX);
-  this.scrollbarX.setAttribute('tabindex', 0);
   this.event.bind(this.scrollbarX, 'focus', focus);
   this.event.bind(this.scrollbarX, 'blur', blur);
   this.scrollbarXActive = null;
@@ -1211,7 +1216,6 @@ var PerfectScrollbar = function PerfectScrollbar(element, userSettings) {
   element.appendChild(this.scrollbarYRail);
   this.scrollbarY = div(cls.element.thumb('y'));
   this.scrollbarYRail.appendChild(this.scrollbarY);
-  this.scrollbarY.setAttribute('tabindex', 0);
   this.event.bind(this.scrollbarY, 'focus', focus);
   this.event.bind(this.scrollbarY, 'blur', blur);
   this.scrollbarYActive = null;
